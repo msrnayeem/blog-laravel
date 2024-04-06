@@ -17,8 +17,11 @@ use App\Http\Controllers\AdminController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    $blogs = \App\Models\Blog::whereNotNull('published_at') // Filter published posts
+        ->latest()
+        ->paginate(5);
+    return view('welcome', compact('blogs'));
+})->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

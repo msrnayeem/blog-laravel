@@ -26,6 +26,7 @@
                                     <tr>
                                         <th>Title</th>
                                         <th>Content</th>
+                                        <th>Image</th>
                                         <th>Author</th>
                                         <th>Published By</th>
                                         <th>Published At</th>
@@ -37,6 +38,15 @@
                                         <tr>
                                             <td>{{ $blog->title }}</td>
                                             <td>{{ \Illuminate\Support\Str::words(strip_tags($blog->content), 20, '...') }}
+                                            </td>
+                                            <td>
+                                                @if ($blog->image)
+                                                    <img src="{{ asset($blog->image) }}" alt="{{ $blog->image }}"
+                                                        height="50">
+                                                @else
+                                                    No
+                                                    image
+                                                @endif
                                             </td>
                                             <td>{{ $blog->author->name }}</td>
                                             <td>{{ $blog->publisher?->name }}</td>
