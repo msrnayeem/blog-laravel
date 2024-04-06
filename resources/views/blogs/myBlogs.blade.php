@@ -37,8 +37,8 @@
                                     <td>{{ \Illuminate\Support\Str::words(strip_tags($blog->content), 20, '...') }}</td>
                                     <td>
                                         @if ($blog->image)
-                                            <img src="{{ asset($blog->image) }}" alt="{{ $blog->image }}"
-                                                height="50">
+                                            <img src="{{ asset($blog->image) }}" alt="{{ $blog->image }}" height="50"
+                                                width="50">
                                         @else
                                             No
                                             image

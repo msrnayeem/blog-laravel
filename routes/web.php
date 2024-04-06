@@ -38,7 +38,9 @@ require __DIR__ . '/auth.php';
 
 //routes for blog
 Route::middleware(['role:blogger'])->group(function () {
-    Route::resource('user-blogs', BlogController::class);
+    Route::resource('user-blogs', BlogController::class)->except(['show']);
+
+    Route::get('user-blogs/{user_blog}', [BlogController::class, 'show'])->name('user-blogs.show')->withoutMiddleware('role:blogger');
 });
 
 Route::post('/blog/comment/{user_blog}', [BlogController::class, 'comment'])->name('blog.comment');
