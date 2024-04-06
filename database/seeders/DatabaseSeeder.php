@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Models\User;
+use App\Models\Blog;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,15 +23,20 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        $admin = User::create([
-            'name' => 'Admin User',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('password'),
-        ]);
-
         $user = User::create([
             'name' => 'Regular User',
             'email' => 'user@example.com',
+            'password' => bcrypt('password'),
+        ]);
+        $userr = User::create([
+            'name' => 'User 2',
+            'email' => 'user2@example.com',
+            'password' => bcrypt('password'),
+        ]);
+
+        $admin = User::create([
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
             'password' => bcrypt('password'),
         ]);
 
@@ -53,7 +59,11 @@ class DatabaseSeeder extends Seeder
 
         $admin->assignRole($adminRole);
         $user->assignRole($bloggerRole);
+        $userr->assignRole($bloggerRole);
 
+
+
+        Blog::factory()->count(15)->create();
 
     }
 }

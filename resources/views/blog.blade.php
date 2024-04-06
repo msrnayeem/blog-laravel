@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-login-layout>
     <style>
         .container {
             max-width: 800px;
@@ -46,6 +46,54 @@
             @endif
 
             <p class="lead">{!! $user_blog->content !!}</p>
+
+            <hr>
+
+            <h3 class="mt-4">Comments</h3>
+
+            @if ($user_blog->comments->count() > 0)
+                <div class="comments-list mt-3">
+                    @foreach ($user_blog->comments as $comment)
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $comment->name }} @if ($comment->email)
+                                        (<strong>{{ $comment->email }}</strong>)
+                                    @endif
+                                </h5>
+                                <p class="card-text text-italic">{{ $comment->content }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <p class="m-3">No comments yet.</p>
+            @endif
+
+            <hr>
+
+            <h3 class="mt-2">Leave a Comment</h3>
+
+            <form method="POST" action="{{ route('blog.comment', $user_blog) }}" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="blog_id" value="{{ $user_blog->id }}">
+
+                <div class="form-group mt-4">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" id="name" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email (Optional)</label>
+                    <input type="email" name="email" id="email" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="comment">Comment</label>
+                    <textarea name="comment" id="comment" rows="5" class="form-control" required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit Comment</button>
+            </form>
         </div>
     </div>
-</x-guest-layout>
+</x-login-layout>

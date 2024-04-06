@@ -14,7 +14,7 @@
 
         .read-more-btn {
             position: absolute;
-            bottom: 20px;
+            bottom: 10px;
             right: 20px;
         }
     </style>
@@ -39,7 +39,7 @@
                                 <img src="https://via.placeholder.com/800x400" class="img-fluid mb-3"
                                     alt="Blog Post Image">
                             @endif
-                            <p>{!! Str::limit($user_blog->content, 150) !!}</p>
+                            <p>{!! Str::limit($user_blog->content, 100) !!}</p>
                             <a href="{{ route('user-blogs.show', $user_blog) }}"
                                 class="btn btn-primary btn-sm read-more-btn">Read More</a>
                         </div>

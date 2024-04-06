@@ -38,6 +38,7 @@ require __DIR__ . '/auth.php';
 
 //routes for blog
 Route::resource('user-blogs', BlogController::class);
+Route::post('/blog/comment/{user_blog}', [BlogController::class, 'comment'])->name('blog.comment');
 
 
 //routes for admin

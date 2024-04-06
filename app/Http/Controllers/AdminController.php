@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Blog;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Mail\BlogApprove;
+use Illuminate\Support\Facades\Mail;
 
 class AdminController extends Controller
 {
@@ -29,6 +31,9 @@ class AdminController extends Controller
         $blog->published_at = now();
         $blog->publisher_id = auth()->id();
         $blog->save();
+        $blog->relationLoaded('author');
+
+        Mail::to($blog->author->email)->send(new BlogApprove($blog));
 
         return redirect()->route('admin.blogs')->with('success', 'Blog published successfully.');
     }

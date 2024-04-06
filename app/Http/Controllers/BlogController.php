@@ -133,4 +133,14 @@ class BlogController extends Controller
 
         return redirect()->route('user-blogs.index');
     }
+
+    public function comment(Blog $user_blog)
+    {
+        $user_blog->comments()->create([
+            'name' => request('name'),
+            'email' => request('email') ?? null,
+            'content' => request('comment'),
+        ]);
+        return redirect()->route('user-blogs.show', $user_blog->id);
+    }
 }
