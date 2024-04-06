@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BlogRequest;
+use App\Mail\CommentMail;
 use App\Models\Blog;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Mail;
 
 class BlogController extends Controller
 {
@@ -136,11 +138,14 @@ class BlogController extends Controller
 
     public function comment(Blog $user_blog)
     {
-        $user_blog->comments()->create([
+        $comment = $user_blog->comments()->create([
             'name' => request('name'),
             'email' => request('email') ?? null,
             'content' => request('comment'),
         ]);
+
+        Mail::to($user_blog->author->email)->send(new CommentMail($user_blog, $comment));
+
         return redirect()->route('user-blogs.show', $user_blog->id);
     }
 }
