@@ -25,12 +25,12 @@ class DatabaseSeeder extends Seeder
 
         $user = User::create([
             'name' => 'Regular User',
-            'email' => 'user@example.com',
+            'email' => 'msrnayeem@gmail.com',
             'password' => bcrypt('password'),
         ]);
         $userr = User::create([
             'name' => 'User 2',
-            'email' => 'user2@example.com',
+            'email' => 'msrnayeemm@gmail.com',
             'password' => bcrypt('password'),
         ]);
 

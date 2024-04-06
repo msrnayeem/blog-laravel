@@ -37,15 +37,24 @@ require __DIR__ . '/auth.php';
 
 
 //routes for blog
-Route::resource('user-blogs', BlogController::class);
+Route::middleware(['role:blogger'])->group(function () {
+    Route::resource('user-blogs', BlogController::class);
+});
+
 Route::post('/blog/comment/{user_blog}', [BlogController::class, 'comment'])->name('blog.comment');
 
 
 //routes for admin
-Route::get('/users', [AdminController::class, 'users'])->name('users.index');
-Route::delete('/users/{user}', [AdminController::class, 'destroyUser'])->name('users.destroy');
-Route::get('/admin-blogs', [AdminController::class, 'blogs'])->name('admin.blogs');
+Route::middleware(['role:admin'])->group(function () {
+    Route::get('/users', [AdminController::class, 'users'])->name('users.index');
+    Route::delete('/users/{user}', [AdminController::class, 'destroyUser'])->name('users.destroy');
 
-Route::post('/admin-blogs/{blog}/publish', [AdminController::class, 'publish'])->name('admin.blogs.publish');
-Route::post('/admin-blogs/{blog}/unpublish', [AdminController::class, 'unpublish'])->name('admin.blogs.unpublish');
-Route::delete('/admin-blogs/{blog}', [AdminController::class, 'destroyBlog'])->name('admin.blogs.destroy');
+    Route::get('/admin-blogs', [AdminController::class, 'blogs'])->name('admin.blogs');
+    Route::post('/admin-blogs/{blog}/publish', [AdminController::class, 'publish'])->name('admin.blogs.publish');
+    Route::post('/admin-blogs/{blog}/unpublish', [AdminController::class, 'unpublish'])->name('admin.blogs.unpublish');
+    Route::delete('/admin-blogs/{blog}', [AdminController::class, 'destroyBlog'])->name('admin.blogs.destroy');
+});
+
+
+
+
