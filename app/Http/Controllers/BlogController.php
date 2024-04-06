@@ -80,6 +80,10 @@ class BlogController extends Controller
      */
     public function edit(Blog $user_blog)
     {
+        if ($user_blog->author_id !== auth()->id()) {
+            Session::flash('error', 'You are not authorized to delete this blog!');
+            return redirect()->back();
+        }
         return view('blogs.edit', compact('user_blog'));
     }
 
