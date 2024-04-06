@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,4 +30,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
+
+
+//route for blog create and store
+Route::get('/blogs/create', [BlogController::class, 'create'])->name('blogs.create');
+Route::post('/blogs/store', [BlogController::class, 'store'])->name('blogs.store');
+
+//route for blog index
+Route::get('/my-blogs', [BlogController::class, 'myBlogs'])->name('blogs.my-blogs');
+
+
+//routes for user
+Route::get('/users', [UserController::class, 'index'])->name('users.index');

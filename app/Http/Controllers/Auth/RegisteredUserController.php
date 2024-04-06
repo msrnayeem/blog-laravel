@@ -44,6 +44,8 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $user->assignRole('blogger');
+
         event(new Registered($user));
         Mail::to($user->email)->send(new WelcomeEmail($user));
 
