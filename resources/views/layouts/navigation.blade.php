@@ -18,28 +18,28 @@
                             </x-nav-link>
                         </div>
                         <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                            <x-nav-link :href="route('users')" :active="request()->routeIs('users')">
+                            <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
                                 {{ __('Users') }}
                             </x-nav-link>
                         </div>
                         <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                            <x-nav-link :href="route('blogs.my-blogs')" :active="request()->routeIs('blogs.my-blogs')">
+                            <x-nav-link :href="route('admin.blogs')" :active="request()->routeIs('admin.blogs')">
                                 {{ __('blogs') }}
                             </x-nav-link>
                         </div>
-                    @elseif (auth()->user()->hasRole('user'))
+                    @elseif (auth()->user()->hasRole('blogger'))
                         <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                             <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                                 {{ __('Dashboard') }}
                             </x-nav-link>
                         </div>
                         <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                            <x-nav-link :href="route('blogs.create')" :active="request()->routeIs('blogs.create')">
+                            <x-nav-link :href="route('user-blogs.create')" :active="request()->routeIs('user-blogs.create')">
                                 {{ __('new Blog') }}
                             </x-nav-link>
                         </div>
                         <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                            <x-nav-link :href="route('blogs.my-blogs')" :active="request()->routeIs('blogs.my-blogs')">
+                            <x-nav-link :href="route('user-blogs.index')" :active="request()->routeIs('user-blogs.index')">
                                 {{ __('My Blogs') }}
                             </x-nav-link>
                         </div>

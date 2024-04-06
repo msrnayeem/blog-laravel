@@ -17,32 +17,63 @@
                     </div>
                 @endif
             </div>
-            @foreach ($blogs as $blog)
-                <div class="col-md-7 mb-4"> <!-- Use col-md-6 for 50% width on medium screens -->
-                    <hr>
-                    <div class="blog-item">
-                        <h3><strong>title:</strong> {{ $blog->title }}</h3>
-                        <p><strong>Content:</strong>
-                            {{ \Illuminate\Support\Str::words(strip_tags($blog->content), 20, '...') }}</p>
-                        <p><strong>Published By:</strong> {{ $blog->publisher_id }}</p>
-                        <p><strong>Published At:</strong>
-                            @if ($blog->published_at)
-                                {{ $blog->published_at->format('F j, Y') }}
-                            @else
-                                Not published yet
-                            @endif
-                        </p>
-                        {{-- Uncomment the line below if you have comments relationship --}}
-                        {{-- <p><strong>Total Comments:</strong> {{ $blog->comments->count() }}</p> --}}
-                    </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Content</th>
+                                <th>Image</th>
+                                <th>Published By</th>
+                                <th>Published At</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($blogs as $blog)
+                                <tr>
+                                    <td>{{ $blog->title }}</td>
+                                    <td>{{ \Illuminate\Support\Str::words(strip_tags($blog->content), 20, '...') }}</td>
+                                    <td>
+                                        @if ($blog->image)
+                                            <img src="{{ asset($blog->image) }}" alt="{{ $blog->image }}"
+                                                height="50">
+                                        @else
+                                            No
+                                            image
+                                        @endif
+                                    </td>
+                                    <td>{{ $blog->publisher->name ?? 'N\A' }}</td>
+                                    <td>
+                                        @if ($blog->published_at)
+                                            {{ $blog->published_at->format('F j, Y') }}
+                                        @else
+                                            Not published yet
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('user-blogs.edit', $blog->id) }}"
+                                            class="btn btn-info btn-sm">Edit</a>
+                                        <form action="{{ route('user-blogs.destroy', $blog->id) }}" method="POST"
+                                            style="display: inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Are you sure you want to delete this blog?')">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4">No blogs found.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
-            @endforeach
+            </div>
 
-            @if ($blogs->isEmpty())
-                <div class="col-md-6"> <!-- Center align no blogs found message -->
-                    <p>No blogs found.</p>
-                </div>
-            @endif
         </div>
     </div>
 

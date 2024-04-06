@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('New Blog') }}
+            {{ __('Edit Blog') }}
         </h2>
     </x-slot>
     <div class="p-4 bg-body-secondary">
@@ -11,12 +11,14 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('blogs.store') }}" class="space-y-4 p-4">
+        <form method="POST" action="{{ route('user-blogs.update', $user_blog->id) }}" class="space-y-4 p-4"
+            enctype="multipart/form-data">
             @csrf
+            @method('PUT')
             <div class="mb-3">
                 <label for="title" class="form-label h4">Title:</label>
                 <input type="text" id="title" name="title" required class="form-control form-control-lg"
-                    placeholder="Enter title" value="{{ old('title') }}">
+                    placeholder="Enter title" value="{{ old('title', $user_blog->title) }}">
                 @error('title')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
@@ -32,7 +34,7 @@
 
             <div class="mb-3">
                 <label for="content" class="form-label h4">Content:</label>
-                <textarea id="summernote" name="content" class="form-control form-control-lg" rows="5">{{ old('content') }}</textarea>
+                <textarea id="summernote" name="content" class="form-control form-control-lg" rows="5">{{ old('content', $user_blog->content) }}</textarea>
                 @error('content')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror

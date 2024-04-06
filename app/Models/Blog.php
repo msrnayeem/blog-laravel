@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Blog extends Model
 {
+    protected $table = 'blogs';
+
     protected $fillable = [
         'title',
         'content',
@@ -14,6 +16,10 @@ class Blog extends Model
         'author_id',
         'publisher_id',
         'published_at',
+    ];
+
+    protected $casts = [
+        'published_at' => 'datetime',
     ];
 
     public function author()

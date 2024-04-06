@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BlogController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,13 +33,15 @@ Route::middleware('auth')->group(function () {
 require __DIR__ . '/auth.php';
 
 
-//route for blog create and store
-Route::get('/blogs/create', [BlogController::class, 'create'])->name('blogs.create');
-Route::post('/blogs/store', [BlogController::class, 'store'])->name('blogs.store');
-
-//route for blog index
-Route::get('/my-blogs', [BlogController::class, 'myBlogs'])->name('blogs.my-blogs');
+//routes for blog
+Route::resource('user-blogs', BlogController::class);
 
 
-//routes for user
-Route::get('/users', [UserController::class, 'index'])->name('users.index');
+//routes for admin
+Route::get('/users', [AdminController::class, 'users'])->name('users.index');
+Route::delete('/users/{user}', [AdminController::class, 'destroyUser'])->name('users.destroy');
+Route::get('/admin-blogs', [AdminController::class, 'blogs'])->name('admin.blogs');
+
+Route::post('/admin-blogs/{blog}/publish', [AdminController::class, 'publish'])->name('admin.blogs.publish');
+Route::post('/admin-blogs/{blog}/unpublish', [AdminController::class, 'unpublish'])->name('admin.blogs.unpublish');
+Route::delete('/admin-blogs/{blog}', [AdminController::class, 'destroyBlog'])->name('admin.blogs.destroy');

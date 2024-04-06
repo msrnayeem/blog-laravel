@@ -11,7 +11,7 @@ class BlogController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function myBlogs()
+    public function index()
     {
         $blogs = Blog::where('author_id', auth()->id())->get();
 
@@ -35,7 +35,15 @@ class BlogController extends Controller
             $image = null;
 
             if ($request->hasFile('image')) {
-                $image = $request->file('image')->store('blog_images', 'public');
+
+                $image = $request->file('image');
+
+                $filename = time() . '_' . $image->getClientOriginalName();
+
+                $storagePath = '/images/';
+
+                $image->move(public_path($storagePath), $filename);
+                $image = $storagePath . $filename;
             }
 
             $blog = Blog::create([
@@ -48,7 +56,7 @@ class BlogController extends Controller
 
             Session::flash('success', 'Blog created successfully!');
 
-            return redirect()->route('blogs.my-blogs');
+            return redirect()->route('user-blogs.index');
         } catch (\Exception $e) {
 
             Session::flash('error', 'Failed to create blog: ' . $e->getMessage());
@@ -68,24 +76,61 @@ class BlogController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Blog $blog)
+    public function edit(Blog $user_blog)
     {
-        //
+        return view('blogs.edit', compact('user_blog'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(BlogRequest $request, Blog $blog)
+    public function update(BlogRequest $request, Blog $user_blog)
     {
-        //
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+
+            if ($user_blog->image) {
+                if (file_exists(public_path($user_blog->image))) {
+                    unlink(public_path($user_blog->image));
+                }
+            }
+
+            $image = $request->file('image');
+            $filename = time() . '_' . $image->getClientOriginalName();
+            $storagePath = '/images/';
+            $image->move(public_path($storagePath), $filename);
+            $imagePath = $storagePath . $filename;
+        }
+
+        $user_blog->update([
+            'title' => $request->title,
+            'content' => $request->content,
+            'image' => $imagePath ?? $user_blog->image,
+        ]);
+
+        Session::flash('success', 'Blog updated successfully!');
+
+        return redirect()->route('user-blogs.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Blog $blog)
+    public function destroy(Blog $user_blog)
     {
-        //
+        if ($user_blog->author_id !== auth()->id()) {
+            Session::flash('error', 'You are not authorized to delete this blog!');
+            return redirect()->back();
+        }
+        if ($user_blog->image) {
+            if (file_exists(public_path($user_blog->image))) {
+                unlink(public_path($user_blog->image));
+            }
+        }
+        $user_blog->delete();
+
+        Session::flash('success', 'Blog deleted successfully!');
+
+        return redirect()->route('user-blogs.index');
     }
 }

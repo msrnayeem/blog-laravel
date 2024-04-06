@@ -11,7 +11,7 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('blogs.store') }}" class="space-y-4 p-4">
+        <form method="POST" action="{{ route('user-blogs.store') }}" class="space-y-4 p-4" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
                 <label for="title" class="form-label h4">Title:</label>
